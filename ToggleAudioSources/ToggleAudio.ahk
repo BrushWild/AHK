@@ -6,17 +6,15 @@
 class ToggleAudio{
     __New()
     {
-        ; The headphone enpoint string and enpoint vars will probably need to be adjusted for your personal machine
+        ; The headphone enpoint string and endpoint vars will probably need to be adjusted for your personal machine
         this.headphoneEndpointString := "Speakers (Realtek High Definition Audio)"
         this.endpointVar1 := 1
         this.endpointVar2 := 2
         this.endpointToggle := False
-
         if (this.IsDeviceHeadphones())
         {
             this.endpointToggle := True
         }
-
         this.SetEndpoint()
         this.ChangeIcon()
     }
