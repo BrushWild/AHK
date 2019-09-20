@@ -100,6 +100,7 @@ class CycleAudio
     TogglePlaySoundsOnChange()
     {
         this.soundOnChange := !this.soundOnChange
+        Menu, Tray, ToggleCheck, Play sounds
     }
 }
 
@@ -108,7 +109,8 @@ cycleAudio := new CycleAudio
 
 ; Right click menu options
 Menu, Tray, Add ; this adds a separating line
-Menu, Tray, Add, Play sounds, MenuTogglePlaySoundOnChange
+Menu, Tray, Add, Play sounds, MenuTogglePlaySounds
+Menu, Tray, Check, Play sounds
 ;Menu, Tray, Add, Get Source Name, MenuEndpointNameMsgBox
 Menu, Tray, Add, Cycle audio source, MenuCycleEndpoint
 
@@ -124,7 +126,7 @@ MenuEndpointNameMsgBox:
     cycleAudio.EndpointNameMsgBox()
 Return
 
-MenuTogglePlaySoundOnChange:
+MenuTogglePlaySounds:
     cycleAudio.TogglePlaySoundsOnChange()
 Return
 
