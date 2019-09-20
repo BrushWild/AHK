@@ -17,4 +17,7 @@ Here are some steps to get it working for you:
    2. SetEndpoint()
    3. GetEndpointIndex()
 6. Change 'this.endpointMax' to the number of outputs you want to cycle through
-7. Profit!!! 
+7. Compile your script and run
+8. Profit!!! 
+
+*Bonus*: If you want the script to start with windows, place a shortcut to your compiled exe at 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp'
