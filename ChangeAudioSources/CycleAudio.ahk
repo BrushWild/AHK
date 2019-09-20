@@ -14,9 +14,18 @@ class CycleAudio
     {
         ; The headphone enpoint strings and max var will probably need to be adjusted for your personal machine
         ; -- Alt+D will create a message box with the string on the current playback device (endpoint)
-        this.endpointString1 := "Speakers (Realtek High Definition Audio)"
-        this.endpointString2 := "Acer X34 (NVIDIA High Definition Audio)"
-        this.endpointString3 := ""
+
+        ; create arrays
+        this.endpointStringArray := []
+        this.endpointIconArray := []
+
+        ; put stuff in the arrays
+        this.endpointStringArray.Push("Speakers (Realtek High Definition Audio)")
+        this.endpointStringArray.Push("Acer X34 (NVIDIA High Definition Audio)")
+        this.endpointIconArray.Push("head-0.ico")
+        this.endpointIconArray.Push("speak-0.ico")
+
+        ; other initialize stuff
         this.endpointMax := 2
         this.endpointIndex := this.GetEndpointIndex()
         this.playSounds := True
@@ -46,19 +55,9 @@ class CycleAudio
     ChangeIcon()
     {
         ; These expect the icon to exist in the source folder of the script/exe
-        deviceName := VA_GetDeviceName(VA_GetDevice())
-        if ("" . deviceName = this.endpointString1)
-        {
-            Menu, Tray, Icon, %A_ScriptDir%\head-0.ico,,1
-        }
-        else if ("" . deviceName = this.endpointString2)
-        {
-            Menu, Tray, Icon, %A_ScriptDir%\speak-0.ico,,1
-        }
-        else if ("" . deviceName = this.endpointString3)
-        {
-            Menu, Tray, Icon, %A_ScriptDir%\speak-0.ico,,1
-        }
+        index := this.GetEndpointIndex()
+        iconLocation := this.endpointIconArray[this.endpointIndex]
+        Menu, Tray, Icon, %A_ScriptDir%\%iconLocation%,,1
     }
 
     /*
@@ -66,18 +65,7 @@ class CycleAudio
     */
     SetEndpoint()
     {
-        if (this.endpointIndex == 1)
-        {
-            VA_SetDefaultEndpoint(this.endpointString1, 0)
-        }
-        else if (this.endpointIndex == 2)
-        {
-            VA_SetDefaultEndpoint(this.endpointString2, 0)
-        }
-        else if (this.endpointIndex == 3)
-        {
-            VA_SetDefaultEndpoint(this.endpointString3, 0)
-        }
+        VA_SetDefaultEndpoint(this.endpointStringArray[this.endpointIndex], 0)
     }
 
     /*
@@ -85,19 +73,14 @@ class CycleAudio
     */
     GetEndpointIndex()
     {
-        retIndex := 0 
+        retIndex := 1
         deviceName := VA_GetDeviceName(VA_GetDevice())
-        if ("" . deviceName = this.endpointString1)
+        for index, element in this.endpointStringArray
         {
-            retIndex := 1
-        }
-        else if ("" . deviceName = this.endpointString2)
-        {
-            retIndex := 2
-        }
-        else if ("" . deviceName = this.endpointString3)
-        {
-            retIndex := 3
+            if ("" . deviceName = element)
+            {
+                retIndex := index
+            }
         }
         return retIndex
     }
