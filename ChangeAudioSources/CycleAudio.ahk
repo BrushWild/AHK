@@ -16,12 +16,12 @@ class CycleAudio
         ; -- Alt+D will create a message box with the string on the current playback device (endpoint)
 
         ; create arrays
-        this.endpointStringArray := []
+        this.endpointNameArray := []
         this.endpointIconArray := []
 
         ; put stuff in the arrays
-        this.endpointStringArray.Push("Speakers (Realtek High Definition Audio)")
-        this.endpointStringArray.Push("Acer X34 (NVIDIA High Definition Audio)")
+        this.endpointNameArray.Push("Speakers (Realtek High Definition Audio)")
+        this.endpointNameArray.Push("Acer X34 (NVIDIA High Definition Audio)")
         this.endpointIconArray.Push("head-0.ico")
         this.endpointIconArray.Push("speak-0.ico")
 
@@ -65,7 +65,7 @@ class CycleAudio
     */
     SetEndpoint()
     {
-        VA_SetDefaultEndpoint(this.endpointStringArray[this.endpointIndex], 0)
+        VA_SetDefaultEndpoint(this.endpointNameArray[this.endpointIndex], 0)
     }
 
     /*
@@ -75,7 +75,7 @@ class CycleAudio
     {
         retIndex := 1
         deviceName := VA_GetDeviceName(VA_GetDevice())
-        for index, element in this.endpointStringArray
+        for index, element in this.endpointNameArray
         {
             if ("" . deviceName = element)
             {
