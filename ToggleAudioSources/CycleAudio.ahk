@@ -97,15 +97,20 @@ class CycleAudio
     {
         SoundPlay, %A_ScriptDir%\quack.wav, Wait
     }
+    TogglePlaySoundsOnChange()
+    {
+        this.soundOnChange := !this.soundOnChange
+    }
 }
 
 ; Script Initialize for CycleAudio
 cycleAudio := new CycleAudio
 
 ; Right click menu options
-Menu, Tray, Add
-Menu, Tray, Add, Cycle Audio Source, MenuCycleEndpoint
+Menu, Tray, Add ; this adds a separating line
+Menu, Tray, Add, Toggle Sound on Change, MenuTogglePlaySoundOnChange
 ;Menu, Tray, Add, Get Source Name, MenuEndpointNameMsgBox
+Menu, Tray, Add, Cycle Audio Source, MenuCycleEndpoint
 
 ; End script initialize
 return
@@ -117,6 +122,10 @@ Return
 
 MenuEndpointNameMsgBox:
     cycleAudio.EndpointNameMsgBox()
+Return
+
+MenuTogglePlaySoundOnChange:
+    cycleAudio.TogglePlaySoundsOnChange()
 Return
 
 ; Hotkeys

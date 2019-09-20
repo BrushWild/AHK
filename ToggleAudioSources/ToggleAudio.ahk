@@ -64,6 +64,10 @@ class ToggleAudio{
     {
         SoundPlay, %A_ScriptDir%\quack.wav, Wait
     }
+    TogglePlaySoundsOnChange()
+    {
+        this.soundOnChange := !this.soundOnChange
+    }
 }
 
 ; Script Initialize
@@ -71,6 +75,7 @@ toggleAudio := new ToggleAudio
 
 ; Right click menu options
 Menu, Tray, Add
+Menu, Tray, Add, Toggle Sound on Change, MenuTogglePlaySoundOnChange
 Menu, Tray, Add, Toggle Audio Source, MenuToggleEndpoint
 
 ; End script initialize
@@ -79,6 +84,10 @@ return
 ; Menu functions
 MenuToggleEndpoint:
     toggleAudio.ToggleEndpoint()
+Return
+
+MenuTogglePlaySoundOnChange:
+    toggleAudio.TogglePlaySoundsOnChange()
 Return
 
 ; Hotkeys
