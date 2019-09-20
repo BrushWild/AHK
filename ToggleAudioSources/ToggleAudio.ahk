@@ -8,8 +8,7 @@ class ToggleAudio{
     {
         ; The headphone enpoint string and endpoint vars will probably need to be adjusted for your personal machine
         this.headphoneEndpointString := "Speakers (Realtek High Definition Audio)"
-        this.endpointVar1 := 1
-        this.endpointVar2 := 2
+        this.speakersEndpointString := "Acer X34 (NVIDIA High Definition Audio)"
         this.endpointToggle := False
         if (this.IsDeviceHeadphones())
         {
@@ -37,7 +36,14 @@ class ToggleAudio{
     }
     SetEndpoint()
     {
-        VA_SetDefaultEndpoint("playback:" (this.endpointToggle ? this.endpointVar1 : this.endpointVar2), 0)        
+        if(this.endpointToggle)
+        {
+            VA_SetDefaultEndpoint(this.headphoneEndpointString, 0)
+        }
+        else
+        {
+            VA_SetDefaultEndpoint(this.speakersEndpointString, 0)
+        }
     }
     IsDeviceHeadphones()
     {
