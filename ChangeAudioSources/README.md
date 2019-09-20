@@ -17,5 +17,6 @@ Here are some steps to get it working for you:
 7. Change 'this.endpointMax' to the number of outputs you want to cycle through
 8. Compile your script and run
 9. Profit!!! 
+10. If that still doesn't work, try disabling all your unused sources.
 
 *Bonus*: If you want the script to start with windows, place a shortcut to your compiled exe at 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp'
