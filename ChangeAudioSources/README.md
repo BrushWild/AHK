@@ -14,8 +14,8 @@ Here are some steps to get it working for you:
 4. From CycleAudio.ahk, add "this.endpointNameArray.Push(...)" (under the 'New()' function) replacing the "..." with your new audio output string from step 3
 5. For new icons, do the same as step 4, but add "this.endpointIconArray.Push(...)" replacing "..." with the icon file name
 6. Repeat steps 3-5 for as many outputs/icons as you want to cycle through
-6. Change 'this.endpointMax' to the number of outputs you want to cycle through
-7. Compile your script and run
-8. Profit!!! 
+7. Change 'this.endpointMax' to the number of outputs you want to cycle through
+8. Compile your script and run
+9. Profit!!! 
 
 *Bonus*: If you want the script to start with windows, place a shortcut to your compiled exe at 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp'
