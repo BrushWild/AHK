@@ -68,8 +68,6 @@ class CycleAudio
         {
             VA_SetDefaultEndpoint(this.endpointString3, 0)
         }
-
-        SoundPlay, quack.mp3
     }
     GetEndpointIndex()
     {
