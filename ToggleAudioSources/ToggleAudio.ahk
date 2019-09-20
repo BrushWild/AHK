@@ -2,6 +2,9 @@
 #Persistent	;this keeps the script running if no hotkeys are set (though one is)
 #SingleInstance force ;forces a single instance of the script
 
+MsgBox, 0, ToggleAudio.ahk, This version of my script is now obsolete compared to 'CycleAudio.ahk'. Please use that instead.
+
+/*
 ; Class declaration
 class ToggleAudio{
     __New()
@@ -100,3 +103,4 @@ KillToolTip:
     SetTimer, KillToolTip, Off
     ToolTip
 Return
+*/
