@@ -108,9 +108,9 @@ cycleAudio := new CycleAudio
 
 ; Right click menu options
 Menu, Tray, Add ; this adds a separating line
-Menu, Tray, Add, Toggle Sound on Change, MenuTogglePlaySoundOnChange
+Menu, Tray, Add, Play sounds, MenuTogglePlaySoundOnChange
 ;Menu, Tray, Add, Get Source Name, MenuEndpointNameMsgBox
-Menu, Tray, Add, Cycle Audio Source, MenuCycleEndpoint
+Menu, Tray, Add, Cycle audio source, MenuCycleEndpoint
 
 ; End script initialize
 return

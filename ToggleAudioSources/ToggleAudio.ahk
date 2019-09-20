@@ -75,8 +75,8 @@ toggleAudio := new ToggleAudio
 
 ; Right click menu options
 Menu, Tray, Add
-Menu, Tray, Add, Toggle Sound on Change, MenuTogglePlaySoundOnChange
-Menu, Tray, Add, Toggle Audio Source, MenuToggleEndpoint
+Menu, Tray, Add, Play sounds, MenuTogglePlaySoundOnChange
+Menu, Tray, Add, Toggle audio source, MenuToggleEndpoint
 
 ; End script initialize
 return
