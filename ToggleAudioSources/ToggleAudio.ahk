@@ -10,6 +10,7 @@ class ToggleAudio{
         this.headphoneEndpointString := "Speakers (Realtek High Definition Audio)"
         this.speakersEndpointString := "Acer X34 (NVIDIA High Definition Audio)"
         this.endpointToggle := False
+        this.soundOnChange := True
         if (this.IsDeviceHeadphones())
         {
             this.endpointToggle := True
@@ -22,6 +23,8 @@ class ToggleAudio{
         this.endpointToggle := !this.endpointToggle
         this.SetEndpoint()
         this.ChangeIcon()
+        if (this.soundOnChange) 
+            this.PlaySound()
     }
     ChangeIcon()
     {
@@ -56,6 +59,10 @@ class ToggleAudio{
         {
             return False
         }
+    }
+    PlaySound()
+    {
+        SoundPlay, %A_ScriptDir%\quack.wav, Wait
     }
 }
 

@@ -18,6 +18,7 @@ class CycleAudio
         this.endpointString3 := ""
         this.endpointMax := 2
         this.endpointIndex := this.GetEndpointIndex()
+        this.soundOnChange := True
         this.SetEndpoint()
         this.ChangeIcon()
     }
@@ -33,33 +34,42 @@ class CycleAudio
         }
         this.SetEndpoint()
         this.ChangeIcon()
+        if (this.soundOnChange) 
+            this.PlaySound()
     }
     ChangeIcon()
     {
         ; These expect the icon to exist in the source folder
-        cachedIndex := this.GetEndpointIndex()
-        if (cachedIndex == 1)
+        deviceName := VA_GetDeviceName(VA_GetDevice())
+        if ("" . deviceName = this.endpointString1)
         {
             Menu, Tray, Icon, head-0.ico,,1
         }
-        else if (cachedIndex == 2)
+        else if ("" . deviceName = this.endpointString2)
         {
             Menu, Tray, Icon, speak-0.ico,,1
         }
-        else if (cachedIndex == 3)
+        else if ("" . deviceName = this.endpointString3)
         {
-            Menu, Tray, Icon, head-0.ico,,1
+            Menu, Tray, Icon, speak-0.ico,,1
         }
     }
     SetEndpoint()
     {
-        VA_SetDefaultEndpoint("playback:" this.endpointIndex, 0)
-
-        if (! VA_GetDevice("playback:" this.endpointIndex))
+        if (this.endpointIndex == 1)
         {
-            ToolTip % "Could not find output device for this index=" this.endpointIndex
-            SetTimer, KillToolTip, 3000
+            VA_SetDefaultEndpoint(this.endpointString1, 0)
         }
+        else if (this.endpointIndex == 2)
+        {
+            VA_SetDefaultEndpoint(this.endpointString2, 0)
+        }
+        else if (this.endpointIndex == 3)
+        {
+            VA_SetDefaultEndpoint(this.endpointString3, 0)
+        }
+
+        SoundPlay, quack.mp3
     }
     GetEndpointIndex()
     {
@@ -77,11 +87,17 @@ class CycleAudio
         {
             retIndex := 3
         }
-
-        ; Debug for device name
-        ;MsgBox, 0, Debug, %deviceName%
-
         return retIndex
+    }
+    EndpointNameMsgBox()
+    {
+        ; Debug for device name
+        deviceName := VA_GetDeviceName(VA_GetDevice())
+        MsgBox, 0, Debug, %deviceName%
+    }
+    PlaySound()
+    {
+        SoundPlay, %A_ScriptDir%\quack.wav, Wait
     }
 }
 
@@ -91,6 +107,7 @@ cycleAudio := new CycleAudio
 ; Right click menu options
 Menu, Tray, Add
 Menu, Tray, Add, Cycle Audio Source, MenuCycleEndpoint
+;Menu, Tray, Add, Get Source Name, MenuEndpointNameMsgBox
 
 ; End script initialize
 return
@@ -98,6 +115,10 @@ return
 ; Menu functions
 MenuCycleEndpoint:
     cycleAudio.CycleEndpoint()
+Return
+
+MenuEndpointNameMsgBox:
+    cycleAudio.EndpointNameMsgBox()
 Return
 
 ; Hotkeys
