@@ -18,6 +18,12 @@ class CycleAudio
         ; create arrays
         this.endpointNameArray := []
         this.endpointIconArray := []
+        
+        /*
+        <rant>
+            Arrays start at 1 in AHK. Seriously??? Whyyyyyyyyy!???! 
+        </rant>
+        */
 
         ; put stuff in the arrays
         this.endpointNameArray.Push("Speakers (Realtek High Definition Audio)")
