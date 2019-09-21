@@ -62,7 +62,7 @@ class CycleAudio
     {
         ; These expect the icon to exist in the source folder of the script/exe
         index := this.GetEndpointIndex()
-        iconLocation := this.endpointIconArray[this.endpointIndex]
+        iconLocation := this.endpointIconArray[index]
         Menu, Tray, Icon, %A_ScriptDir%\%iconLocation%,,1
     }
 
