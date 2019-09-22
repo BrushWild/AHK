@@ -61,16 +61,15 @@ class CycleAudio
     */
     ChangeIcon()
     {
-        ; These expect the icon to exist in the source folder of the script/exe
         iconLocation := this.endpointIconArray[this.endpointIndex]
         if (iconLocation && this.endpointMax > 0)
         {
-            Menu, Tray, Icon, %A_ScriptDir%\%iconLocation%,,1
+            Menu, Tray, Icon, %A_ScriptDir%\icons\%iconLocation%,,1
         }
         else
         {
             ; Default if we can't find an icon
-            Menu, Tray, Icon, %A_ScriptDir%\SpectrumGreenIco.ico,,1
+            Menu, Tray, Icon, %A_ScriptDir%\icons\SpectrumGreenIco.ico,,1
         }
     }
 
@@ -117,7 +116,7 @@ class CycleAudio
     */
     PlaySound()
     {
-        SoundPlay, %A_ScriptDir%\quack.wav, Wait
+        SoundPlay, %A_ScriptDir%\sounds\quack.wav, Wait
     }
 
     /*
