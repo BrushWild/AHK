@@ -15,26 +15,27 @@ class CycleAudio
         ; The headphone enpoint strings and max var will probably need to be adjusted for your personal machine
         ; -- Alt+D will create a message box with the string on the current playback device (endpoint)
 
+        ; create variables
+        this.endpointMax := this.CountActiveAudioOutputs()
+        if (this.endpointMax <= 0)
+        {
+            this.UserSetEndpointMax()
+        }
+        this.playSounds := True
+
         ; create arrays
         this.endpointNameArray := []
         this.endpointIconArray := []
-        
-        /*
-        <rant>
-            Arrays start at 1 in AHK. Seriously??? Whyyyyyyyyy!???! 
-        </rant>
-        */
 
         ; put stuff in the arrays
-        this.endpointNameArray.Push("Speakers (Realtek High Definition Audio)")
-        this.endpointNameArray.Push("Acer X34 (NVIDIA High Definition Audio)")
+        this.LoadEndpointNames()
+
+        ; TODO: Add icons - until I can figure out a way to programatically assign icons to outputs, these need to be done manually
         this.endpointIconArray.Push("head-0.ico")
         this.endpointIconArray.Push("speak-0.ico")
 
         ; other initialize stuff
-        this.endpointMax := 2
         this.endpointIndex := this.GetEndpointIndex()
-        this.playSounds := True
         this.SetEndpoint()
         this.ChangeIcon()
     }
@@ -61,9 +62,16 @@ class CycleAudio
     ChangeIcon()
     {
         ; These expect the icon to exist in the source folder of the script/exe
-        index := this.GetEndpointIndex()
-        iconLocation := this.endpointIconArray[index]
-        Menu, Tray, Icon, %A_ScriptDir%\%iconLocation%,,1
+        iconLocation := this.endpointIconArray[this.endpointIndex]
+        if (iconLocation && this.endpointMax > 0)
+        {
+            Menu, Tray, Icon, %A_ScriptDir%\%iconLocation%,,1
+        }
+        else
+        {
+            ; Default if we can't find an icon
+            Menu, Tray, Icon, %A_ScriptDir%\SpectrumGreenIco.ico,,1
+        }
     }
 
     /*
@@ -71,11 +79,15 @@ class CycleAudio
     */
     SetEndpoint()
     {
-        VA_SetDefaultEndpoint(this.endpointNameArray[this.endpointIndex], 0)
+        endpointName := this.endpointNameArray[this.endpointIndex]
+        if (endpointName)
+        {
+            VA_SetDefaultEndpoint(endpointName, 0)
+        }
     }
 
     /*
-    ---- Get the current endpoing index ----
+    ---- Get the current endpoint index ----
     */
     GetEndpointIndex()
     {
@@ -116,6 +128,58 @@ class CycleAudio
         this.playSounds := !this.playSounds
         Menu, Tray, ToggleCheck, Play sounds
     }
+
+    /*
+    ---- Grab output names ----
+    */
+    LoadEndpointNames()
+    {
+        index := 1
+        while index <= this.endpointMax
+        {
+            device := VA_GetDevice("playback:" index)
+            if (device == 0)
+            {
+                return
+            }
+            this.endpointNameArray.Push(VA_GetDeviceName(device))
+            index := index + 1
+        }
+    }
+
+    /*
+    ---- Counts active audio output devices ----
+    */
+    CountActiveAudioOutputs()
+    {
+        count := 0
+        index := 1
+        max := 99
+        while index <= max
+        {
+            device := VA_GetDevice("playback:" index)
+            if (device == 0)
+            {
+                return count ; exit early
+            }
+            this.endpointNameArray.Push(VA_GetDeviceName(device))
+            index := index + 1
+            count := count + 1
+        }
+        return count ; covering all code paths
+    }
+
+    /*
+    ---- Define number of inputs to look for ----
+    */
+    UserSetEndpointMax()
+    {
+        newMax := 0
+        InputBox, newMax, CycleAudio.ahk, Please define the number of audio outputs.,,,
+        this.endpointMax := newMax
+        this.endpointNameArray := []
+        this.LoadEndpointNames()
+    }
 }
 
 ; Create cycle audio class instance
@@ -123,9 +187,11 @@ cycleAudio := new CycleAudio
 
 ; Right click menu options
 Menu, Tray, Add ; this adds a separating line
+Menu, Tray, Add, Set number of outputs, MenuUserSetEndpointMax
 Menu, Tray, Add, Play sounds, MenuTogglePlaySounds
 if (cycleAudio.playSounds)
     Menu, Tray, Check, Play sounds
+Menu, Tray, Add ; this adds a separating line
 ;Menu, Tray, Add, Get Source Name, MenuEndpointNameMsgBox
 Menu, Tray, Add, Cycle audio source, MenuCycleEndpoint
 
@@ -145,6 +211,10 @@ Return
 
 MenuTogglePlaySounds:
     cycleAudio.TogglePlaySoundsOnChange()
+Return
+
+MenuUserSetEndpointMax:
+    cycleAudio.UserSetEndpointMax()
 Return
 
 /* 
