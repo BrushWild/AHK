@@ -31,8 +31,8 @@ class CycleAudio
         this.LoadEndpointNames()
 
         ; TODO: Add icons - until I can figure out a way to programatically assign icons to outputs, these need to be done manually
-        this.endpointIconArray.Push("head-0.ico")
-        this.endpointIconArray.Push("speak-0.ico")
+        ;this.endpointIconArray.Push("head-0.ico")
+        ;this.endpointIconArray.Push("speak-0.ico")
 
         ; other initialize stuff
         this.endpointIndex := this.GetEndpointIndex()
