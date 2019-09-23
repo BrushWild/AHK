@@ -1,6 +1,8 @@
 # README for CycleAudio.ahk
 This script cycles between defined audio sources via the tray menu (right click) or hotkeys. I've also added some audio/visual feedback when you change outputs by including two icons and a quack sound to give context when you change your output.
 
+To run the script, simply just launch the CycleAudio.exe
+
 * Alt+X: Cycles between audio output devices.
 * Alt+M: Turns on/off sounds when cycling.
 * Alt+D: Opens a message box with the name of the current output device.
