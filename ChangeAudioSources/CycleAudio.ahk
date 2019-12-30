@@ -31,8 +31,8 @@ class CycleAudio
         this.LoadEndpointNames()
 
         ; TODO: Add icons - until I can figure out a way to programatically assign icons to outputs, these need to be done manually
-        ;this.endpointIconArray.Push("head-0.ico")
-        ;this.endpointIconArray.Push("speak-0.ico")
+        this.endpointIconArray.Push("head-0.ico")
+        this.endpointIconArray.Push("speak-0.ico")
 
         ; other initialize stuff
         this.endpointIndex := this.GetEndpointIndex()
@@ -179,6 +179,23 @@ class CycleAudio
         this.endpointNameArray := []
         this.LoadEndpointNames()
     }
+
+    /*
+    ---- Reload endpoints
+    */
+    ReloadActiveEndpoints()
+    {
+        this.endpointMax := this.CountActiveAudioOutputs()
+        this.endpointNameArray := []
+        this.endpointIconArray := []
+        this.LoadEndpointNames()
+        ; TODO: Add icons - until I can figure out a way to programatically assign icons to outputs, these need to be done manually
+        this.endpointIconArray.Push("head-0.ico")
+        this.endpointIconArray.Push("speak-0.ico")
+        this.endpointIndex := this.GetEndpointIndex()
+        this.SetEndpoint()
+        this.ChangeIcon()
+    }
 }
 
 ; Create cycle audio class instance
@@ -187,6 +204,7 @@ cycleAudio := new CycleAudio
 ; Right click menu options
 Menu, Tray, Add ; this adds a separating line
 Menu, Tray, Add, Set number of outputs, MenuUserSetEndpointMax
+Menu, Tray, Add, Reload audio sources, MenuReload
 Menu, Tray, Add, Play sounds, MenuTogglePlaySounds
 if (cycleAudio.playSounds)
     Menu, Tray, Check, Play sounds
@@ -214,6 +232,10 @@ Return
 
 MenuUserSetEndpointMax:
     cycleAudio.UserSetEndpointMax()
+Return
+
+MenuReload:
+    cycleAudio.ReloadActiveEndpoints()
 Return
 
 /* 
