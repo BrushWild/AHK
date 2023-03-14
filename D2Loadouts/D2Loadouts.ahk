@@ -1,4 +1,3 @@
-#include VA.ahk	;VA.ahk has to be in the same folder as this script
 #Persistent	;this keeps the script running if no hotkeys are set (though one is)
 #SingleInstance force ;forces a single instance of the script
 
@@ -25,7 +24,7 @@ class D2Loadout
     {
         if (!this.CheckD2())
         {
-            return
+            return false
         }
         xPos := this.XposArray[index]
         yPos := this.YposArray[index]
@@ -40,6 +39,7 @@ class D2Loadout
         Send {Escape}
         Sleep, 50
         Send {Escape}
+        return true
     }
 
     CheckD2()
@@ -69,42 +69,52 @@ MouseGetPos, xpos, ypos
 MsgBox, The cursor is at X%xpos% Y%ypos%.
 return
 
-Numpad0::
-swapper.SwapLoadout(1)
+$Numpad0::
+if (!swapper.SwapLoadout(1))
+    Send {Numpad0}
 return
 
-Numpad1::
-swapper.SwapLoadout(2)
+$Numpad1::
+if (!swapper.SwapLoadout(2))
+    Send {Numpad1}
 return
 
-Numpad2::
-swapper.SwapLoadout(3)
+$Numpad2::
+if (!swapper.SwapLoadout(3))
+    Send {Numpad2}
 return
 
-Numpad3::
-swapper.SwapLoadout(4)
+$Numpad3::
+if (!swapper.SwapLoadout(4))
+    Send {Numpad3}
 return
 
-Numpad4::
-swapper.SwapLoadout(5)
+$Numpad4::
+if (!swapper.SwapLoadout(5))
+    Send {Numpad4}
 return
 
-Numpad5::
-swapper.SwapLoadout(6)
+$Numpad5::
+if (!swapper.SwapLoadout(6))
+    Send {Numpad5}
 return
 
-Numpad6::
-swapper.SwapLoadout(7)
+$Numpad6::
+if (!swapper.SwapLoadout(7))
+    Send {Numpad6}
 return
 
-Numpad7::
-swapper.SwapLoadout(8)
+$Numpad7::
+if (!swapper.SwapLoadout(8))
+    Send {Numpad7}
 return
 
-Numpad8::
-swapper.SwapLoadout(9)
+$Numpad8::
+if (!swapper.SwapLoadout(9))
+    Send {Numpad8}
 return
 
-Numpad9::
-swapper.SwapLoadout(10)
+$Numpad9::
+if (!swapper.SwapLoadout(10))
+    Send {Numpad9}
 return
