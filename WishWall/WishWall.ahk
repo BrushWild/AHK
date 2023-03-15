@@ -1,3 +1,9 @@
+/*
+---- DISCLAIMER! ----
+This is not my original creation. Go throw some love to the creator at www.shurochi.com
+I adapted this script to be (subjectively) more readable and add some customized functionality.
+*/
+
 #Persistent
 #SingleInstance Force
 
@@ -11,6 +17,7 @@ class WishWall
     */
 	__New()
 	{
+		; class variables
 		this.wishNumber := 0
 		this.pos_x := 0.0
 		this.pos_y := 0.0
@@ -19,6 +26,7 @@ class WishWall
 		this.sens_scalar := 0
 		this.recoil := 0
 
+		; set up variables
 		this.LoadWallSensTxt()
 		this.GetScreenHeight()
 	}
@@ -26,6 +34,8 @@ class WishWall
 	/*
     ---- Class functions ----
     */
+
+	; Load the sensitivity from a file
 	LoadWallSensTxt()
 	{
 		FileRead, sens, %A_ScriptDir%\wall_sens.txt
@@ -37,6 +47,7 @@ class WishWall
 		this.recoil := 2.9999 / this.sens_scalar
 	}
 
+	; grab the screen heigh
 	GetScreenHeight()
 	{
 		switch %A_ScreenHeight%
@@ -55,6 +66,7 @@ class WishWall
 		}
 	}
 
+	; Grabs player input
 	GetWishInput()
 	{
 		if (!this.CheckD2())
@@ -66,6 +78,7 @@ class WishWall
 		return true
 	}
 
+	; Execute the selected wish
 	MakeAWish()
 	{
 		if (!this.CheckD2())
@@ -125,6 +138,7 @@ class WishWall
 		return true
 	}
 
+	; Verify the correct window
 	CheckD2()
     {
         WinGetTitle, activeWindow, A
@@ -139,6 +153,7 @@ class WishWall
         }
     }
 
+	; The following are helper functions for all wishes
 	shoot(Array, LoopCount)
 	{
 		Loop %LoopCount%
@@ -557,7 +572,7 @@ wish := new WishWall
 ; End main script initialize
 return
 
-; Hotkeys
+; Hotkeys (Note: All hotkeys verify that destiny 2 is the active window. Default behavior of the key is used otherwise.)
 $F3::
 if (!wish.GetWishInput()) ; Get a new wish input
     Send {F3}
