@@ -13,3 +13,4 @@ A collection of Autohotkey scripts
 * Sunbreaker - AFK d2 with the sunbreaker class
 * TogglePower - Toggles power plans.
 * VA - support files for ToggleAudioSources
+* WishWall - Customized wish wall script for Destiny 2. Original script/creator www.shurochi.com
