@@ -1,8 +1,6 @@
-#NoEnv
 #SingleInstance, Force
 SendMode, Input
 SetWorkingDir, %A_ScriptDir%
-Thread, Interrupt, 0
 
 /*
 --- Class declaration
@@ -14,8 +12,8 @@ class EES
     */
     __New()
     {
-        this.toggle := true
         this.skateState := 1
+        this.toggle := this.skateState < 3 ? true : false
         this.states := Array("HunterHeavySkate", "HunterLightSkate", "WarlockHeavySkate", "WarlockLightSkate")
     }
     
@@ -25,47 +23,46 @@ class EES
     HunterHeavySkate()
     {
         Click, Down Right
-        Sleep, 53
-        Send {Space down}
-        Sleep, 42
+        Sleep, 5
         Click, Up Right
-        Sleep, 37
+        Sleep, 45
+        Send {Space down}
         Send {x down}
-        Sleep, 48
-        Send {space up}
-        Sleep, 63
+        Sleep, 35
+        Send {Space up}
         Send {x up}
     }
 
     HunterLightSkate()
     {
+        Sleep, 10
         Send {Space down}
+        Sleep, 10
+        Send {Space up}
         Sleep, 10
         Click, Down Left
         Sleep, 10
-        Send {Space up}
-        Sleep, 10
         Click, Up Left
-        Sleep, 10
+        Sleep, 25
         Send {Space down}
-        Send {x down}
-        Sleep, 30
+        Sleep, 25
         Send {Space up}
+        Sleep, 25
+        Send {x down}
+        Sleep, 25
         Send {x up}
     }
 
     WarlockHeavyWellSkate()
     {
         Click, Down Right
-        Sleep, 53
-        Send {Space down}
-        Sleep, 42
+        Sleep, 5
         Click, Up Right
-        Sleep, 37
+        Sleep, 45
+        Send {Space down}
         Send {f down}
-        Sleep, 48
-        Send {space up}
-        Sleep, 63
+        Sleep, 35
+        Send {Space up}
         Send {f up}
     }
 
@@ -73,16 +70,18 @@ class EES
     {
         Send {Space down}
         Sleep, 10
+        Send {Space up}
+        Sleep, 10
         Click, Down Left
         Sleep, 10
-        Send {Space up}
-        Sleep, 10
         Click, Up Left
-        Sleep, 10
+        Sleep, 25
         Send {Space down}
-        Send {f down}
-        Sleep, 30
+        Sleep, 25
         Send {Space up}
+        Sleep, 25
+        Send {f down}
+        Sleep, 25
         Send {f up}
     }
 
@@ -182,18 +181,21 @@ return
 */
 
 ; Cycle classes to skate with
-^NumpadAdd::
-    skate.SwitchClassSkate()
+$NumpadAdd::
+    if (!skate.SwitchClassSkate())
+        Send {NumpadAdd}
 return
 
 ; Swap between heavy/light skating
-^NumpadEnter::
-    skate.SwitchSkateStates()
+$NumpadEnter::
+    if (!skate.SwitchSkateStates())
+        Send {NumpadEnter}
 return
 
 ; Press for zoomies! 
-^F4::
-    skate.SendSkateOutput()
+$F4::
+    if (!skate.SendSkateOutput())
+        Send {F4}
 return
 
 ^Numpad6:: ; ctrl + num 6
