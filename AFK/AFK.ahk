@@ -31,7 +31,9 @@ class xpCheese
     __New()
     {
         this.toggle := false                            ; create the toggle
-        this.state := 1
+        this.pix := 1
+        this.pixMax := 3
+        this.state := 2
         this.stateNames := Array("Trinity", "Sunbreaker")
         timer := ObjBindMethod(this, "StankyCheese")    ; bind the function StankyCheese to the timer
         SetTimer, % timer, 0                            ; start the timer
@@ -98,14 +100,28 @@ class xpCheese
 
     Trinity()
     {
+        MouseX := 0
+        MouseY := 0
+        MouseGetPos, MouseX, MouseY
+        this.pix += 1
+        if (this.pix > this.pixMax)
+            this.pix := 1
+
+        if (this.pix < this.pixMax)
+            MouseX += 2
+        Else
+            MouseX += 3
+
         Click, Down
-        Sleep, 600
+        Sleep, 100
         Click, Up
-        Sleep, 500
-        Send {LControl Down}
-        Sleep, 500
-        Send {LControl Up}
-        Sleep, 2800
+        Sleep, 1000
+        Send, a
+        Sleep, 400
+        Send, d
+        Sleep, 2600
+
+        MouseMove, MouseX, MouseY
     }
 
     CheckD2()
