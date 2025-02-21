@@ -18,14 +18,16 @@ class ForceMicVolume
     __New()
     {
         this.endpointMax := 0
-        this.inputVolume := 23.5
-        this.defaultVolume := 23.5
+        this.defaultVolume := 22.5
+        this.inputVolume := this.defaultVolume
+        this.LoadSettingsIni()
+        
         this.timer := ObjBindMethod(this, "SetMicVolume")
         timer := this.timer
         SetTimer % timer, 10000
         this.timer2electricboogaloo := ObjBindMethod(this, "SetDefaultMic")
         timer2 := this.timer2electricboogaloo
-        SetTimer % timer2, 10000
+        SetTimer % timer2, 60000
         this.activeDeviceIndex := 0
     }
 
@@ -45,11 +47,11 @@ class ForceMicVolume
             IfInString, deviceName, %rode%
             {
                 desiredVolume := this.inputVolume + 0.0
-                volumeStr := VA_GetVolume("1", "", "capture")
+                volumeStr := VA_GetVolume("1", "", "capture:" index)
                 volume := volumeStr + 0.0
-                if ( volume < desiredVolume )
+                if (volume != desiredVolume)
                 {
-                    VA_SetVolume( desiredVolume, "1", "", "capture" )
+                    VA_SetVolume( desiredVolume, "1", "", "capture:" index)
                 }
                 return
             }
@@ -109,6 +111,11 @@ class ForceMicVolume
             input := this.defaultVolume + 0.0
         }
         this.inputVolume := input
+        if FileExist("mic_settings.ini") 
+        {
+            IniWrite, %input%, mic_settings.ini, Variables, Volume
+        }
+        this.SetMicVolume()
     }
 
     GetInputNames()
@@ -136,6 +143,32 @@ class ForceMicVolume
             index := index + 1
         }
     }
+
+    LoadSettingsIni()
+    {
+        if !FileExist("mic_settings.ini") 
+        {
+            MsgBox, No mic_settings.ini found, please input your settings now.
+            InputBox, vol, Volume, Input your ingame volume (default: 30):,, 230, 150
+            ;InputBox, recoil, Recoil, Input your recoil (default: 2.95`,` higher = down):,, 230, 150
+            ;InputBox, cycle_time, Speed / shot delay, Input shot delay in ms (default: 53`,` higher = slower):,, 230, 150
+            IniWrite, %vol%, mic_settings.ini, Variables, Volume
+            ;IniWrite, %recoil%, wall_settings.ini, Variables, Recoil
+            ;IniWrite, %cycle_time%, wall_settings.ini, Variables, Cycle_Time
+
+            this.inputVolume := vol
+            ;this.recoil := recoil
+            ;this.cycle_time := cycle_time
+        } 
+        else 
+        {
+            IniRead, vol, mic_settings.ini, Variables, Volume
+            ;IniRead, recoil, mic_settings.ini, Variables, Recoil
+            ;IniRead, cycle_time, mic_settings.ini, Variables, Cycle_Time
+
+            this.inputVolume := vol
+        }
+    }
 }
 
 ; Create cycle audio class instance
@@ -154,6 +187,6 @@ MenuVolume:
 Return
 
 ; Hotkeys
-^d::
+^m::
     force.SetDefaultMic()
 return

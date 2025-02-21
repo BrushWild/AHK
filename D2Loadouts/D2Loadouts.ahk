@@ -42,6 +42,13 @@ class D2Loadout
         return true
     }
 
+    CraftCheese()
+    {
+        Click, 1500 431
+        Sleep, 1
+        Click, 1604 560
+    }
+
     CheckD2()
     {
         WinGetTitle, activeWindow, A
@@ -69,6 +76,11 @@ MouseGetPos, xpos, ypos
 MsgBox, The cursor is at X%xpos% Y%ypos%.
 return
 
+Numpad0::
+swapper.CraftCheese()
+return
+
+/*
 $Numpad0::
 if (!swapper.SwapLoadout(1))
     Send {Numpad0}
@@ -118,3 +130,4 @@ $Numpad9::
 if (!swapper.SwapLoadout(10))
     Send {Numpad9}
 return
+*/

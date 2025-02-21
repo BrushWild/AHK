@@ -3,6 +3,18 @@ SendMode, Input
 SetWorkingDir, %A_ScriptDir%
 
 /*
+--- Create the Gui, DO NOT TOUCH THIS SECTION
+*/
+CustomColor := "EEAA99"  ; Can be any RGB color (it will be made transparent below).
+Gui +LastFound +AlwaysOnTop -Caption +ToolWindow  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
+Gui, Color, %CustomColor%
+Gui, Font, s32  ; Set a large font size (32-point).
+Gui, Add, Text, vMyText cLime, XXXXX YYYYY  ; XX & YY serve to auto-size the window.
+; Make all pixels of this color transparent and make the text itself translucent (150):
+WinSet, TransColor, %CustomColor% 150
+
+
+/*
 --- Class declaration
 */
 class EES 
@@ -13,8 +25,13 @@ class EES
     __New()
     {
         this.skateState := 1
-        this.toggle := this.skateState < 3 ? true : false
-        this.states := Array("HunterHeavySkate", "HunterLightSkate", "WarlockHeavySkate", "WarlockLightSkate")
+        this.shortNames := Array("H Heavy", "H Light", "W Heavy", "W Light")
+
+        this.autoHide := true
+
+        ; Create a timer to auto hide the Gui
+        this.timer := ObjBindMethod(this, "HideGui")
+        this.UpdateOSD()
     }
     
     /*
@@ -85,38 +102,21 @@ class EES
         Send {f up}
     }
 
-    SwitchClassSkate()
-    {
-        this.toggle := !this.toggle
-        this.SwitchSkateStates()
-    }
-
     SwitchSkateStates()
     {
-        if (this.toggle)
+        if (this.CheckD2())
         {
-            if (this.skateState == 1)
-            {
-                this.skateState := 2
-            }
-            Else
+            this.skateState += 1
+            if (this.skateState > 4)
             {
                 this.skateState := 1
             }
-        }
-        Else
-        {
-            if (this.skateState == 3)
-            {
-                this.skateState := 4
-            }
-            Else
-            {
-                this.skateState := 3
-            }
-        }
 
-        this.StatePrint()
+            ;this.StatePrint() ; DEPRICATED IN FAVOR OF GUI
+
+            this.ShowGui()
+            this.UpdateOSD()
+        }
     }
 
     SendSkateOutput()
@@ -136,26 +136,32 @@ class EES
                     
                 Default: Send {space}
             }
+
+            ;this.ShowGui(250)
         }
     }
 
+    /*
+    --- DEPRICATED
     StatePrint()
     {
         if (this.CheckD2())
         {
             state := this.skateState
-            stateString := this.states[state]
+            stateString := this.shortNames[state]
             Sleep, 50
             Send {Enter}
             Sleep, 100
             Send %stateString%
-            Sleep, 1000
+            Sleep, 500
             Send {Escape}
         }
     }
+    */
 
     CheckD2()
     {
+        /*
         WinGetTitle, activeWindow, A
         title := "Destiny 2"
         IfInString, activeWindow, %title%
@@ -165,6 +171,79 @@ class EES
         Else
         {
             return false
+        }
+        */
+
+        If (WinActive("ahk_exe destiny2.exe"))
+        {
+            return true
+        }
+        Else
+        {
+            return false
+        }
+    }
+
+    ShowGui( guiDuration := 1000 )
+    {
+        Sysget, totalWidth, 16
+        Sysget, totalHeight, 17
+        offsetX := totalWidth * .8
+        offsetY := totalHeight * .8
+
+        Gui, Show, x%offsetX% y%offsetY% NoActivate  ; NoActivate avoids deactivating the currently active window.
+
+        if (this.autoHide)
+        {
+            ; start the timer
+            timer := this.timer
+            duration := guiDuration
+            SetTimer, % timer, % duration
+        }
+    }
+
+    HideGui()
+    {
+        Gui, Hide
+
+        ; delete the timer
+        timer := this.timer
+        SetTimer, % timer, off
+    }
+
+    UpdateOSD()
+    {
+        state := this.skateState
+        osdText := this.shortNames[state]
+        GuiControl,, MyText, %osdText%
+    }
+
+    ToggleAutoHideGui()
+    {
+        if (!this.CheckD2())
+        {
+            return false
+        }
+
+        this.autoHide := !this.autoHide
+
+        if (!this.autoHide)
+        {
+            this.ShowGui()
+        }
+        Else
+        {
+            this.HideGui()
+        }
+    }
+
+    HoldMiddleMouse()
+    {
+        if (this.CheckD2())
+        {
+            Send {MButton Down}
+            Sleep 1250
+            Send {MButton Up}
         }
     }
 }
@@ -182,20 +261,24 @@ return
 
 ; Cycle classes to skate with
 $NumpadAdd::
-    if (!skate.SwitchClassSkate())
+    if (!skate.SwitchSkateStates())
         Send {NumpadAdd}
 return
 
-; Swap between heavy/light skating
-$NumpadEnter::
-    if (!skate.SwitchSkateStates())
-        Send {NumpadEnter}
+$F5::
+    if (!skate.ToggleAutoHideGui())
+        Send {F5}
 return
 
 ; Press for zoomies! 
 $F4::
     if (!skate.SendSkateOutput())
         Send {F4}
+return
+
+$WheelUp::
+    if (!skate.HoldMiddleMouse())
+        Send {WheelUp}
 return
 
 ^Numpad6:: ; ctrl + num 6

@@ -4,6 +4,6 @@
 Menu, Tray, Icon, shrugIcon.ico,,1
 Return
 
-!s::
+^!s::
 	Send, ¯\_(ツ)_/¯
 Return

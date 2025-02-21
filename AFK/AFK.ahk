@@ -58,7 +58,7 @@ class xpCheese
             {
                 case 1:
                 {
-                    this.Trinity()
+                    this.Super()
                 }
                 case 2:
                 {
@@ -92,6 +92,16 @@ class xpCheese
     {
         Send, /                                     ; this is the "grenade" key. Change this if needed
         Sleep, 1200
+        Send, a
+        Sleep, 400
+        Send, d
+        Sleep, 2800
+    }
+
+    Super()
+    {
+        Send, f                                     ; this is the "grenade" key. Change this if needed
+        Sleep, 5000
         Send, a
         Sleep, 400
         Send, d
